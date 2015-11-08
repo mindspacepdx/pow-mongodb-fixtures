@@ -217,7 +217,7 @@ Loader.prototype.clearAllAndLoad = function(fixtures, cb) {
     self.load(fixtures, function(err) {
       cb(err);
     });
-	});
+  });
 };
 
 
@@ -241,7 +241,7 @@ Loader.prototype.clearAndLoad = function(fixtures, cb) {
       if (err) return cb(err);
 
       _loadData(self, objData, cb);
-  	});
+    });
   });
 };
 
@@ -320,15 +320,15 @@ var _close = function(loader, cb) {
  * @api private
  */
 var _loadData = function(loader, data, cb) {
-	cb = cb || noop;
+  cb = cb || noop;
 
-	var collectionNames = Object.keys(data);
+  var collectionNames = Object.keys(data);
 
-	_connect(loader, function(err, db) {
-		if (err) return cb(err);
+  _connect(loader, function(err, db) {
+    if (err) return cb(err);
 
-		async.forEach(collectionNames, function(collectionName, cbForEachCollection) {
-			var collectionData = data[collectionName];
+    async.forEach(collectionNames, function(collectionName, cbForEachCollection) {
+      var collectionData = data[collectionName];
 
       //Convert object to array
       var items;
@@ -363,11 +363,11 @@ var _loadData = function(loader, data, cb) {
         db.collection(collectionName, function(err, collection) {
           if (err) return cbForEachCollection(err);
 
-          collection.insertMany(modifiedItems, { safe: true }, cbForEachCollection);
+          collection.insertMany(modifiedItems, null, cbForEachCollection);
         });
       });
-		}, cb);
-	});
+    }, cb);
+  });
 };
 
 
@@ -412,6 +412,12 @@ var _mixedToObject = function(fixtures, cb) {
  */
 var _fileToObject = function(file, cb) {
   cb = cb || noop;
+
+  // Ignore setup.js
+  if (_.last(file.split('/')) === 'setup.js') {
+    cb(null, {});
+    return;
+  }
 
   // Resolve relative paths if necessary.
   file = path.resolve(basePath, file);
