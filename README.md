@@ -1,7 +1,11 @@
-[![Build Status](https://travis-ci.org/powmedia/pow-mongodb-fixtures.svg?branch=master)](https://travis-ci.org/powmedia/pow-mongodb-fixtures)
 
 pow-mongodb-fixtures
 =================
+
+## Fork Changes
+- Locked mongodb to valid version with dependencies
+- Support for `setup.js` in a fixture directory that's ignored (used for sharing ids without circular require issues when separating collections across files)
+
 
 Simple fixture loader for MongoDB on NodeJS.  Makes managing relationships between documents easier.
 
